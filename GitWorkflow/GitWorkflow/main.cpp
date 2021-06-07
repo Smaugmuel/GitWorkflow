@@ -19,6 +19,7 @@ int main()
 		}
 
 		window.clear();
+		player.update();
 		window.draw(player);
 		window.display();
 	}
