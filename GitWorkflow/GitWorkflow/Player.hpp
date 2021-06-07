@@ -18,6 +18,11 @@ public:
 
 	sf::Vector2f getPosition() const { return m_model.getPosition(); }
 
+	void update() 
+	{ 
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) move({ -0.01f, 0.f }); 
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) move({  0.01f, 0.f });
+	}
 private:
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const override
 	{
