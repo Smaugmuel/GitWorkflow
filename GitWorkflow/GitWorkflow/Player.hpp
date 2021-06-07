@@ -10,14 +10,19 @@ public:
 	{
 		m_model.setFillColor(color);
 	}
-
 	~Player() = default;
 
-private:
-	sf::RectangleShape m_model;
+	void setPosition(sf::Vector2f position) { m_model.setPosition(position); }
 
-	void draw(sf::RenderTarget& target, sf::RenderStates states) const override 
+	void move(sf::Vector2f offset) { m_model.setPosition(m_model.getPosition() + offset); }
+
+	sf::Vector2f getPosition() const { return m_model.getPosition(); }
+
+private:
+	void draw(sf::RenderTarget& target, sf::RenderStates states) const override
 	{
 		target.draw(m_model, states);
 	}
+
+	sf::RectangleShape m_model;
 };
