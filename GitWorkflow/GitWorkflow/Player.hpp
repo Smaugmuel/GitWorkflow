@@ -5,10 +5,11 @@
 class Player final : public sf::Drawable
 {
 public:
-	Player(const sf::Vector2f& size = sf::Vector2f(100.f, 100.f), const sf::Color& color = sf::Color::Red)
+	Player(const sf::Vector2f& position = { 0.f, 0.f }, const sf::Vector2f& size = { 100.f, 100.f }, const sf::Color & color = sf::Color::Red)
 		: m_model(size)
 	{
 		m_model.setFillColor(color);
+		m_model.setPosition(position);
 	}
 	~Player() = default;
 
