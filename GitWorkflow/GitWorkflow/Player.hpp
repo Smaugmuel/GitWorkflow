@@ -18,6 +18,8 @@ public:
 
 	sf::Vector2f getPosition() const { return m_model.getPosition(); }
 
+	const sf::FloatRect getGlobalBounds() const { return m_model.getGlobalBounds(); }
+
 	void update() 
 	{ 
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) move({ -0.01f, 0.f }); 
