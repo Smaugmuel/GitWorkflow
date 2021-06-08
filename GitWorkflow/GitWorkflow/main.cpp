@@ -23,10 +23,10 @@ int main()
 				window.close();
 		}
 
-		window.clear();
 		player.update();
 		if (player.getGlobalBounds().intersects(endPoint.getGlobalBounds())) { window.close(); }
 
+		window.clear();
 		window.draw(player);
 		window.draw(endPoint);
 		window.display();
