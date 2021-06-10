@@ -2,7 +2,7 @@
 #include "Player.hpp"
 #include <chrono>
 
-#define WINDOW_WIDTH (1080)
+#define WINDOW_WIDTH  (1080)
 #define WINDOW_HEIGHT (720)
 
 using Clock = std::chrono::steady_clock;
