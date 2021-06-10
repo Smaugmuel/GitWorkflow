@@ -1,8 +1,12 @@
 #include <SFML/Graphics.hpp>
 #include "Player.hpp"
+#include <chrono>
 
 #define WINDOW_WIDTH (1080)
 #define WINDOW_HEIGHT (720)
+
+using Clock = std::chrono::steady_clock;
+using Time = std::chrono::time_point<Clock>;
 
 int main()
 {
@@ -13,9 +17,14 @@ int main()
 	endPoint.setFillColor(sf::Color::Green);
 
 	Player player;
+	Time t1 = Clock::now();
 
 	while (window.isOpen())
 	{
+		Time t2 = t1;
+		t1 = Clock::now();
+		const float dt = static_cast<float>((t1 - t2).count()) / 1e9;
+
 		sf::Event event;
 		while (window.pollEvent(event))
 		{
@@ -23,7 +32,7 @@ int main()
 				window.close();
 		}
 
-		player.update();
+		player.update(dt);
 		if (player.getGlobalBounds().intersects(endPoint.getGlobalBounds())) { window.close(); }
 
 		window.clear();
