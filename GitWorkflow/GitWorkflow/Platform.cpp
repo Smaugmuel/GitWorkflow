@@ -5,9 +5,6 @@ Platform::Platform(const sf::Vector2f& size, const sf::Vector2f& position, const
 {
 	m_model.setPosition(position);
 	m_model.setFillColor(color);
-
-	// constexpr size_t sizeofT = sizeof(sf::FloatRect);
-	// constexpr size_t sizeofTRef = sizeof(std::reference_wrapper<sf::FloatRect>);
 }
 
 void Platform::setSize(const sf::Vector2f& size)
