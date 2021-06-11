@@ -53,15 +53,18 @@ void Player::collide(const Platform& platform)
 
 void Player::update(const float dt)
 {
-	m_velocity.x = 0.0f;
-
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) m_velocity.x -= m_speed;
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) m_velocity.x += m_speed;
-
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && !m_hasJumped)
+	if (m_velocity.y == 0.0f)
 	{
-		m_velocity.y -= m_speed;
-		m_hasJumped = true;
+		m_velocity.x = 0.0f;
+
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) m_velocity.x -= m_speed;
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) m_velocity.x += m_speed;
+
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && !m_hasJumped)
+		{
+			m_velocity.y -= m_speed;
+			m_hasJumped = true;
+		}
 	}
 
 	move(m_velocity * dt + sf::Vector2f(0.0f, 9.82f) * (dt * dt / 2.0f));
