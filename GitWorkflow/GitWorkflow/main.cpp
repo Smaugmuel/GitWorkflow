@@ -57,6 +57,8 @@ int main()
 			if (player.getGlobalBounds().intersects(platform.getGlobalBounds())) player.collide(platform);
 		}
 
+		if(player.getGlobalBounds().intersects(endPoint.getGlobalBounds())) window.close();
+
 		window.clear();
 		window.draw(player);
 		window.draw(endPoint);
