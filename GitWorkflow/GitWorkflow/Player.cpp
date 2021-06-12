@@ -39,8 +39,8 @@ const sf::FloatRect Player::getGlobalBounds() const
 
 void Player::collide(const Platform& platform)
 {
-	auto intersection = util::intersection(getGlobalBounds(), platform.getGlobalBounds());
-	bool verticalCollision = abs(intersection.width) > abs(intersection.height);
+	const auto intersection = util::intersection(getGlobalBounds(), platform.getGlobalBounds());
+	const bool verticalCollision = abs(intersection.width) > abs(intersection.height);
 
 	move(verticalCollision ? sf::Vector2f(0.0f, intersection.height) : sf::Vector2f(intersection.width, 0.0f));
 
@@ -53,18 +53,15 @@ void Player::collide(const Platform& platform)
 
 void Player::update(const float dt)
 {
-	if (m_velocity.y == 0.0f)
+	m_velocity.x = 0.0f;
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) m_velocity.x -= m_speed;
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) m_velocity.x += m_speed;
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && !m_hasJumped)
 	{
-		m_velocity.x = 0.0f;
-
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) m_velocity.x -= m_speed;
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) m_velocity.x += m_speed;
-
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && !m_hasJumped)
-		{
-			m_velocity.y -= m_speed;
-			m_hasJumped = true;
-		}
+		m_velocity.y -= m_speed;
+		m_hasJumped = true;
 	}
 
 	move(m_velocity * dt + sf::Vector2f(0.0f, 9.82f) * (dt * dt / 2.0f));

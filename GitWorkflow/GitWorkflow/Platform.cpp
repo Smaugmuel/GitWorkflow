@@ -1,7 +1,7 @@
 #include "Platform.hpp"
 
 Platform::Platform(const sf::Vector2f& size, const sf::Vector2f& position, const sf::Color color)
-	: Transformable(), Drawable(), m_model(size)
+	: Drawable(), m_model(size)
 {
 	m_model.setPosition(position);
 	m_model.setFillColor(color);
@@ -42,8 +42,7 @@ const sf::FloatRect& Platform::getGlobalBounds() const
 	return m_model.getGlobalBounds();
 }
 
-void Platform::draw(sf::RenderTarget& target, sf::RenderStates states) const
+void Platform::draw(sf::RenderTarget& target, sf::RenderStates states) const 
 {
-	states.transform *= getTransform();
 	target.draw(m_model, states);
 }

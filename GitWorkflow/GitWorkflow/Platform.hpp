@@ -1,10 +1,8 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
-#include <functional>
-#include <math.h>
 
-class Platform final : public sf::Transformable, public sf::Drawable
+class Platform final : public sf::Drawable
 {
 public:
 	Platform(const sf::Vector2f& size, const sf::Vector2f& position = { 0.0f, 0.0f }, const sf::Color color = sf::Color::White);

@@ -1,7 +1,7 @@
 #include "Utility.hpp"
 #include <iostream>
 
-const sf::FloatRect& util::intersection(const sf::FloatRect& rect1, const sf::FloatRect& rect2)
+const sf::FloatRect util::intersection(const sf::FloatRect& rect1, const sf::FloatRect& rect2)
 {
 	const float x1 = std::max(rect1.left, rect2.left);
 	const float y1 = std::max(rect1.top, rect2.top);

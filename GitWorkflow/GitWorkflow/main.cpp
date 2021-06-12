@@ -1,8 +1,9 @@
+#include <vector>
+#include <chrono>
+
 #include <SFML/Graphics.hpp>
 #include "Player.hpp"
 #include "Utility.hpp"
-#include <vector>
-#include <chrono>
 
 #define WINDOW_WIDTH  (1080)
 #define WINDOW_HEIGHT (720)
@@ -46,13 +47,13 @@ int main()
 
 			if (event.type == sf::Event::MouseButtonReleased && event.mouseButton.button == sf::Mouse::Left)
 			{
-				createPlatform(platformSize, (sf::Vector2f)(sf::Mouse::getPosition(window) - (sf::Vector2i)(platformSize / 2.0f)));
+				createPlatform(platformSize, static_cast<sf::Vector2f>(sf::Mouse::getPosition(window) - static_cast<sf::Vector2i>(platformSize / 2.0f)));
 			}
 		}
 
 		player.update(dt);
 
-		for (auto platform : platforms) 
+		for (const auto& platform : platforms) 
 		{
 			if (player.getGlobalBounds().intersects(platform.getGlobalBounds())) player.collide(platform);
 		}
@@ -63,7 +64,7 @@ int main()
 		window.draw(player);
 		window.draw(endPoint);
 		
-		for (auto platform : platforms)
+		for (const auto& platform : platforms)
 		{
 			window.draw(platform);
 		}
