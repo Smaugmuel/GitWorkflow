@@ -63,7 +63,7 @@ int main()
 		window.clear();
 		window.draw(player);
 		window.draw(endPoint);
-		
+
 		for (const auto& platform : platforms)
 		{
 			window.draw(platform);
