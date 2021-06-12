@@ -1,38 +1,33 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
+#include "Platform.hpp"
+#include "Utility.hpp"
 
 class Player final : public sf::Drawable
 {
 public:
-	Player(const sf::Vector2f& position = { 0.0f, 0.0f }, const sf::Vector2f& size = { 100.0f, 100.0f }, const sf::Color & color = sf::Color::Red)
-		: m_model(size)
-	{
-		m_model.setFillColor(color);
-		m_model.setPosition(position);
-	}
+	Player(const sf::Vector2f& position = { 0.0f, 0.0f }, const sf::Vector2f& size = { 100.0f, 100.0f }, const sf::Color& color = sf::Color::Red);
 	~Player() = default;
 
-	void setPosition(sf::Vector2f position) { m_model.setPosition(position); }
-	void move(sf::Vector2f offset) { m_model.setPosition(m_model.getPosition() + offset); }
-	sf::Vector2f getPosition() const { return m_model.getPosition(); }
+	void move(const sf::Vector2f& offset);
+	void setPosition(const sf::Vector2f& position);
+	const sf::Vector2f& getPosition() const;
 
-	const sf::FloatRect getGlobalBounds() const { return m_model.getGlobalBounds(); }
+	void setVelocity(const sf::Vector2f& velocity);
+	const sf::Vector2f& getVelocity() const;
 
-	void update(const float dt = 0.0f) 
-	{
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) move({ -0.01f, 0.0f }); 
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) move({  0.01f, 0.0f });
+	const sf::FloatRect getGlobalBounds() const;
+	void collide(const Platform& platform);
 
-		move(m_velocity * dt + sf::Vector2f(0.0f, 9.82f) * (dt * dt / 2.0f));
-		m_velocity.y += 9.82f * dt;
-	}
+	void update(const float dt = 0.0f);
+
 private:
-	void draw(sf::RenderTarget& target, sf::RenderStates states) const override
-	{
-		target.draw(m_model, states);
-	}
+	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
 	sf::RectangleShape m_model;
 	sf::Vector2f m_velocity = { 0.0f, 0.0f };
+
+	float m_speed = 40.0f;
+	bool m_hasJumped = true;
 };
