@@ -3,8 +3,8 @@
 
 #include "Level.hpp"
 
-#define WINDOW_WIDTH  (1080)
-#define WINDOW_HEIGHT (720)
+#define WINDOW_WIDTH  (1920)
+#define WINDOW_HEIGHT (1080)
 
 using Clock = std::chrono::steady_clock;
 using Time = std::chrono::time_point<Clock>;
@@ -12,6 +12,7 @@ using Time = std::chrono::time_point<Clock>;
 int main()
 {
 	sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "SFML works!");
+	const float windowScale = (WINDOW_WIDTH / WINDOW_HEIGHT) / (1080 / 720);
 	const sf::Vector2f platformSize = { 100.0f, 10.0f };
 	Level level;
 
@@ -39,7 +40,7 @@ int main()
 			}
 		}
 
-		level.update(dt);
+		level.update(dt * windowScale);
 
 		window.clear();
 		window.draw(level);
