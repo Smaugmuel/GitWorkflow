@@ -21,10 +21,14 @@ void Player::collide(const Platform& platform)
 
 void Player::update(const float dt)
 {
-	m_velocity.x = 0.0f;
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift) || sf::Keyboard::isKeyPressed(sf::Keyboard::RShift)) m_speed = m_baseSpeed * 1.5f;
+	else m_speed = m_baseSpeed;
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) m_velocity.x -= m_speed;
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) m_velocity.x += m_speed;
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) { if (std::abs(m_velocity.x) < m_speed) m_velocity.x -= m_acceleration * dt; }
+	else if (m_velocity.x < 0.0f) m_velocity.x += m_acceleration * dt;
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) { if (std::abs(m_velocity.x) < m_speed) m_velocity.x += m_acceleration * dt; }
+	else if (m_velocity.x > 0.0f) m_velocity.x -= m_acceleration * dt;
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && !m_hasJumped)
 	{

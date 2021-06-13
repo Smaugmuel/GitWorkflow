@@ -13,6 +13,9 @@ public:
 	void update(const float dt) override;
 
 private:
-	float m_speed = 40.0f;
+	const float m_baseSpeed = 40.0f;
+	const float m_acceleration = m_baseSpeed * 2.0f;
+	float m_speed = m_baseSpeed;
+
 	bool m_hasJumped = true;
 };
