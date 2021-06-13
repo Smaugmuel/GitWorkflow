@@ -34,9 +34,10 @@ int main()
 			if (event.type == sf::Event::Closed)
 				window.close();
 
-			if (event.type == sf::Event::MouseButtonReleased && event.mouseButton.button == sf::Mouse::Left)
+			if (event.type == sf::Event::MouseButtonReleased)
 			{
-				level.create<Platform>(platformSize, static_cast<sf::Vector2f>(sf::Mouse::getPosition(window) - static_cast<sf::Vector2i>(platformSize / 2.0f)));
+				if(event.mouseButton.button == sf::Mouse::Left) level.create<Platform>(platformSize, static_cast<sf::Vector2f>(sf::Mouse::getPosition(window) - static_cast<sf::Vector2i>(platformSize / 2.0f)));
+				else if (event.mouseButton.button == sf::Mouse::Right) { level.getPlayer().setPosition(static_cast<sf::Vector2f>(sf::Mouse::getPosition(window))); }
 			}
 		}
 

@@ -1,8 +1,15 @@
 #include "Level.hpp"
+#include <assert.h>
 
 Level::Level()
 	: m_player(), m_endPoint(), m_objects()
 {
+}
+
+Player& Level::getPlayer() const
+{
+	assert(m_player);
+	return *m_player;
 }
 
 void Level::update(const float dt)
