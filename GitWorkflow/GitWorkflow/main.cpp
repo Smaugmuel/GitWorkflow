@@ -24,7 +24,7 @@ int main()
 	{
 		Time t2 = t1;
 		t1 = Clock::now();
-		const float dt = static_cast<float>((t1 - t2).count()) / 1e9;
+		const float dt = static_cast<float>((t1 - t2).count()) / static_cast<float>(1e9);
 
 		sf::Event event;
 

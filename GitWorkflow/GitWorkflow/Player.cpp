@@ -5,20 +5,6 @@ Player::Player(const sf::Vector2f& size, const sf::Vector2f& position, const sf:
 {
 }
 
-void Player::collide(const Platform& platform)
-{
-	const auto intersection = util::intersection(getGlobalBounds(), platform.getGlobalBounds());
-	const bool verticalCollision = abs(intersection.width) > abs(intersection.height);
-
-	move(verticalCollision ? sf::Vector2f(0.0f, intersection.height) : sf::Vector2f(intersection.width, 0.0f));
-
-	if (verticalCollision)
-	{
-		if(m_velocity.y > 0.0f) m_hasJumped = false;
-		setVelocity({ m_velocity.x, 0.0f });
-	}
-}
-
 void Player::update(const float dt)
 {
 	m_velocity.x = 0.0f;
@@ -36,5 +22,10 @@ void Player::update(const float dt)
 	m_velocity.y += 9.82f * dt;
 
 	GameObject::update(dt);
+}
+
+void Player::resetJump()
+{
+	m_hasJumped = false;
 }
 
