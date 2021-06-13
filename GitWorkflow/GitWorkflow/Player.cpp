@@ -34,7 +34,7 @@ void Player::update(const float dt)
 	{
 		if (!m_hasJumped)
 		{
-			m_velocity.y = -m_speed;
+			m_velocity.y = -m_baseSpeed * 1.25f;
 			m_hasJumped = true;
 		}
 	}
