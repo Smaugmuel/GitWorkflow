@@ -1,40 +1,8 @@
 #include "Player.hpp"
 
-Player::Player(const sf::Vector2f& position, const sf::Vector2f& size, const sf::Color& color)
-	: Drawable(), m_model(size)
+Player::Player(const sf::Vector2f& size, const sf::Vector2f& position, const sf::Color color)
+	: GameObject(size, position, color)
 {
-	m_model.setFillColor(color);
-	m_model.setPosition(position);
-}
-
-void Player::move(const sf::Vector2f& offset)
-{
-	m_model.move(offset);
-}
-
-void Player::setPosition(const sf::Vector2f& position)
-{
-	m_model.setPosition(position);
-}
-
-const sf::Vector2f& Player::getPosition() const
-{
-	return m_model.getPosition();
-}
-
-void Player::setVelocity(const sf::Vector2f& velocity)
-{
-	m_velocity = velocity;
-}
-
-const sf::Vector2f& Player::getVelocity() const
-{
-	return m_velocity;
-}
-
-const sf::FloatRect Player::getGlobalBounds() const
-{
-	return m_model.getGlobalBounds();
 }
 
 void Player::collide(const Platform& platform)
@@ -64,11 +32,9 @@ void Player::update(const float dt)
 		m_hasJumped = true;
 	}
 
-	move(m_velocity * dt + sf::Vector2f(0.0f, 9.82f) * (dt * dt / 2.0f));
+	move(sf::Vector2f(0.0f, 9.82f) * (dt * dt / 2.0f));
 	m_velocity.y += 9.82f * dt;
+
+	GameObject::update(dt);
 }
 
-void Player::draw(sf::RenderTarget& target, sf::RenderStates states) const
-{
-	target.draw(m_model, states);
-}
