@@ -5,7 +5,6 @@ Level::Level()
 {
 }
 
-
 void Level::update(const float dt)
 {
 	if (m_player) m_player->update(dt);
@@ -13,7 +12,7 @@ void Level::update(const float dt)
 	{
 		m_endPoint->update(dt);
 
-		if(m_player && m_player->getGlobalBounds().intersects(m_endPoint->getGlobalBounds())) std::printf("LEVEL CLEARED!\n");
+		if (m_player && m_player->getGlobalBounds().intersects(m_endPoint->getGlobalBounds())) std::printf("LEVEL CLEARED!\n");
 	}
 
 	for (const auto& platform : m_platforms)

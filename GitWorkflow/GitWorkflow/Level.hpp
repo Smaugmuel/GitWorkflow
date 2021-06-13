@@ -16,9 +16,9 @@ public:
 	template<typename T, typename... V>
 	void create(const V& ...args)
 	{
-		if (std::is_same<T, Player>::value) m_player = std::make_unique<Player>(args...);
-		else if (std::is_same<T, EndPoint>::value) m_endPoint = std::make_unique<EndPoint>(args...);
-		else if(std::is_same<T, Platform>::value) m_platforms.push_back(std::make_unique<Platform>(args...));
+		if constexpr (std::is_same_v<T, Player>) m_player = std::make_unique<Player>(args...);
+		else if constexpr (std::is_same_v<T, EndPoint>) m_endPoint = std::make_unique<EndPoint>(args...);
+		else if constexpr (std::is_same_v<T, Platform>) m_platforms.push_back(std::make_unique<Platform>(args...));
 		else m_objects.push_back(std::make_unique<T>(args...));
 	}
 

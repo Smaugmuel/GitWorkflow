@@ -1,8 +1,6 @@
 #include <vector>
 #include <chrono>
 
-#include "Platform.hpp"
-#include "Player.hpp"
 #include "Level.hpp"
 
 #define WINDOW_WIDTH  (1080)
