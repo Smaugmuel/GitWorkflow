@@ -21,7 +21,7 @@ void Player::collide(const Platform& platform)
 
 void Player::update(const float dt)
 {
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift) || sf::Keyboard::isKeyPressed(sf::Keyboard::RShift)) m_speed = m_baseSpeed * 1.5f;
+	if (std::roundf(m_velocity.y) == 0.0f && (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift) || sf::Keyboard::isKeyPressed(sf::Keyboard::RShift))) m_speed = m_baseSpeed * 1.5f;
 	else m_speed = m_baseSpeed;
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) { if (std::abs(m_velocity.x) < m_speed * (std::roundf(m_velocity.y) == 0.0f ? 1.0f : 0.5f)) m_velocity.x -= m_acceleration * dt * (std::roundf(m_velocity.y) == 0.0f ? 1.0f : 0.5f); }
