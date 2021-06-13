@@ -24,10 +24,10 @@ void Player::update(const float dt)
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift) || sf::Keyboard::isKeyPressed(sf::Keyboard::RShift)) m_speed = m_baseSpeed * 1.5f;
 	else m_speed = m_baseSpeed;
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) { if (std::abs(m_velocity.x) < m_speed) m_velocity.x -= m_acceleration * dt; }
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) { if (std::abs(m_velocity.x) < m_speed * (std::roundf(m_velocity.y) == 0.0f ? 1.0f : 0.5f)) m_velocity.x -= m_acceleration * dt * (std::roundf(m_velocity.y) == 0.0f ? 1.0f : 0.5f); }
 	else if (m_velocity.x < 0.0f) m_velocity.x += m_acceleration * dt;
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) { if (std::abs(m_velocity.x) < m_speed) m_velocity.x += m_acceleration * dt; }
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) { if (std::abs(m_velocity.x) < m_speed * (std::roundf(m_velocity.y) == 0.0f ? 1.0f : 0.5f)) m_velocity.x += m_acceleration * dt * (std::roundf(m_velocity.y) == 0.0f ? 1.0f : 0.5f); }
 	else if (m_velocity.x > 0.0f) m_velocity.x -= m_acceleration * dt;
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && !m_hasJumped)
@@ -37,7 +37,7 @@ void Player::update(const float dt)
 	}
 
 	move(sf::Vector2f(0.0f, 9.82f) * (dt * dt / 2.0f));
-	m_velocity.y += 9.82f * dt;
+	m_velocity.y += 9.82f * 4.0f * dt; // * 4 IS FOR TESTING PURPOSES ONLY
 
 	GameObject::update(dt);
 }
