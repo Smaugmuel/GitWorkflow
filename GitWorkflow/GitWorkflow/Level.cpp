@@ -1,4 +1,5 @@
 #include "Level.hpp"
+#include "Utility.hpp"
 
 Level::Level()
 	: m_player(), m_endPoint(), m_objects()
@@ -7,19 +8,22 @@ Level::Level()
 
 void Level::update(const float dt)
 {
-	if (m_player) m_player->update(dt);
+	if (m_player)
+		m_player->update(dt);
 	if (m_endPoint)
 	{
 		m_endPoint->update(dt);
 
-		if (m_player && m_player->getGlobalBounds().intersects(m_endPoint->getGlobalBounds())) std::printf("LEVEL CLEARED!\n");
+		if (m_player && util::intersects(m_player->getGlobalBounds(), m_endPoint->getGlobalBounds()))
+			std::printf("LEVEL CLEARED!\n");
 	}
 
 	for (const auto& platform : m_platforms)
 	{
 		platform->update(dt);
 
-		if (m_player && m_player->getGlobalBounds().intersects(platform->getGlobalBounds())) m_player->collide(*platform);
+		if (m_player)
+			util::checkAndResolveCollision(*m_player, *platform);
 	}
 
 	for (auto& object : m_objects)
