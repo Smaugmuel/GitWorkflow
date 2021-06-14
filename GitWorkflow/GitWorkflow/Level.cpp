@@ -6,10 +6,9 @@ Level::Level()
 {
 }
 
-Player& Level::getPlayer() const
+Player* Level::getPlayer() const
 {
-	assert(m_player);
-	return *m_player;
+	return m_player.get();
 }
 
 void Level::update(const float dt)

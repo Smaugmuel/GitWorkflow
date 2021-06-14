@@ -21,29 +21,43 @@ void Player::collide(const Platform& platform)
 
 void Player::update(const float dt)
 {
-	if (std::roundf(m_velocity.y) == 0.0f && (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift) || sf::Keyboard::isKeyPressed(sf::Keyboard::RShift))) m_speed = m_baseSpeed * 1.5f;
+	if (m_collidedLastFrame && 
+		(sf::Keyboard::isKeyPressed(sf::Keyboard::LShift) || sf::Keyboard::isKeyPressed(sf::Keyboard::RShift))) 
+		m_speed = m_baseSpeed * m_sprintModifier;
 	else m_speed = m_baseSpeed;
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) { if (std::abs(m_velocity.x) < m_speed * (std::roundf(m_velocity.y) == 0.0f ? 1.0f : 0.5f)) m_velocity.x -= m_acceleration * dt * (std::roundf(m_velocity.y) == 0.0f ? 1.0f : 0.5f); }
+	const float control = m_collidedLastFrame ? 1.0f : m_airControl;
+
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) 
+	{ 
+		if (std::abs(m_velocity.x) < m_speed * control) 
+			m_velocity.x -= m_acceleration * control * dt;
+	}
 	else if (m_velocity.x < 0.0f) m_velocity.x += m_acceleration * dt;
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) { if (std::abs(m_velocity.x) < m_speed * (std::roundf(m_velocity.y) == 0.0f ? 1.0f : 0.5f)) m_velocity.x += m_acceleration * dt * (std::roundf(m_velocity.y) == 0.0f ? 1.0f : 0.5f); }
-	else if (m_velocity.x > 0.0f) m_velocity.x -= m_acceleration * dt;
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) 
+	{
+		if (std::abs(m_velocity.x) < m_speed * control)
+			m_velocity.x += m_acceleration * dt * control;
+	}
+	else if (m_velocity.x > 0.0f) m_velocity.x -= m_acceleration * control * dt;
 
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
 	{
 		if (!m_hasJumped)
 		{
-			m_velocity.y = -m_baseSpeed * 1.25f;
+			m_velocity.y = -m_baseSpeed * m_jumpModifier;
 			m_hasJumped = true;
 		}
 	}
+	else if (m_hasJumped && m_velocity.y < 0.0f) m_velocity.y += m_speed * dt;
 
-	else if (m_hasJumped && m_velocity.y < 0.0f) { m_velocity.y += m_speed * dt;  }
+	move(m_velocity * dt + sf::Vector2f(0.0f, 9.82f) * 24.0f * (dt * dt * 0.5f));
+	m_velocity.y += 9.82f * 24.0f * dt;
+}
 
-	move(sf::Vector2f(0.0f, 9.82f) * 24.0f * (dt * dt / 2.0f));
-	m_velocity.y += 9.82f * 24.0f * dt; // * 4 IS FOR TESTING PURPOSES ONLY
-
-	GameObject::update(dt);
+void Player::setCollidedLastFrame(const bool collidedLastFrame)
+{
+	m_collidedLastFrame = collidedLastFrame;
 }
 
