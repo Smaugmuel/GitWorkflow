@@ -20,6 +20,7 @@ int main()
 
 	level.create<EndPoint>(sf::Vector2f(20.0f, 20.0f), sf::Vector2f(300.0f, 100.0f));
 	level.create<Player>(sf::Vector2f(20.0f, 20.0f), sf::Vector2f(100.0f, 100.0f));
+	level.create<Platform>(sf::Vector2f(WINDOW_WIDTH, 10.0f), sf::Vector2f(0.0f, WINDOW_HEIGHT));
 
 	while (window.isOpen())
 	{
