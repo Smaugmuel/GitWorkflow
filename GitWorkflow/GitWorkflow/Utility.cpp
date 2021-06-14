@@ -30,8 +30,8 @@ void util::checkAndResolveCollision(Player& player, const Platform& platform)
 		return;
 
 	const sf::FloatRect intersection   = util::intersection(playerRect, platformRect);
-	const sf::Vector2f  playerCenter   = {   playerRect.left +   playerRect.width * 0.5f,   playerRect.top +   playerRect.height * 0.5f };
-	const sf::Vector2f  platformCenter = { platformRect.left + platformRect.width * 0.5f, platformRect.top + platformRect.height * 0.5f };
+	const sf::Vector2f  playerCenter   = util::center(playerRect);
+	const sf::Vector2f  platformCenter = util::center(platformRect);
 
 	float sign = 1.0f;
 	const sf::Vector2f& velocity = player.getVelocity();
