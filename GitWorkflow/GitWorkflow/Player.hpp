@@ -13,7 +13,7 @@ public:
 	void update(const float dt) override;
 
 private:
-	const float m_baseSpeed = 40.0f;
+	const float m_baseSpeed = 160.0f;
 	const float m_acceleration = m_baseSpeed * 2.0f;
 	float m_speed = m_baseSpeed;
 

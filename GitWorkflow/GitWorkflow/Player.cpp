@@ -41,8 +41,8 @@ void Player::update(const float dt)
 
 	else if (m_hasJumped && m_velocity.y < 0.0f) { m_velocity.y += m_speed * dt;  }
 
-	move(sf::Vector2f(0.0f, 9.82f) * (dt * dt / 2.0f));
-	m_velocity.y += 9.82f * 4.0f * dt; // * 4 IS FOR TESTING PURPOSES ONLY
+	move(sf::Vector2f(0.0f, 9.82f) * 24.0f * (dt * dt / 2.0f));
+	m_velocity.y += 9.82f * 24.0f * dt; // * 4 IS FOR TESTING PURPOSES ONLY
 
 	GameObject::update(dt);
 }
