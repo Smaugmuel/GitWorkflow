@@ -6,12 +6,7 @@ Level::Level()
 {
 }
 
-Player* Level::getPlayer() const
-{
-	return m_player.get();
-}
-
-Player* Level::getPlayer() const
+Player* const Level::getPlayer() const
 {
 	return m_player.get();
 }

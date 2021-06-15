@@ -62,23 +62,49 @@ void Player::updateMovement(const float dt)
 	}
 	else if (m_velocity.x > -m_speed)
 		accelerate({ -m_acceleration, 0.0f }, dt);
-	else if(m_velocity.x < -m_speed && !m_sprinting && isColliding()) 
-		accelerate({  m_acceleration, 0.0f }, dt);
+	else if (m_velocity.x < -m_speed && !m_sprinting && isColliding())
+		accelerate({ m_acceleration, 0.0f }, dt);
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) m_velocity.x -= m_speed;
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) m_velocity.x += m_speed;
-
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space) && !m_hasJumped)
+	if (!m_movingRight)
 	{
-		m_velocity.y -= m_speed;
-		m_hasJumped = true;
+		if (m_velocity.x > 0.0f)
+			accelerate({ isColliding() ? -m_acceleration : -m_acceleration * m_airControl, 0.0f }, dt);
 	}
+	else if (m_velocity.x < m_speed)
+		accelerate({ m_acceleration, 0.0f }, dt);
+	else if (m_velocity.x > m_speed && !m_sprinting && isColliding())
+		accelerate({ -m_acceleration, 0.0f }, dt);
 
-	move(sf::Vector2f(0.0f, 9.82f) * (dt * dt / 2.0f));
-	m_velocity.y += 9.82f * dt;
-
-	GameObject::update(dt);
+	if (m_jumping)
+	{
+		if (!m_hasJumped && isColliding())
+		{
+			m_velocity.y = -m_baseSpeed * m_jumpModifier;
+			m_hasJumped = true;
+		}
+	}
+	else if (m_hasJumped && m_velocity.y < 0.0f)
+		m_velocity.y += m_baseSpeed * dt;
 }
 
+void Player::updateSpeed(const float dt)
+{
+	m_speed = m_baseSpeed;
 
+	if (isColliding())
+	{
+		if (m_sprinting)
+			m_speed *= m_sprintModifier;
+	}
+	else
+		m_speed *= m_airControl;
+}
+
+void Player::updateInput()
+{
+	m_movingLeft = sf::Keyboard::isKeyPressed(sf::Keyboard::A);
+	m_movingRight = sf::Keyboard::isKeyPressed(sf::Keyboard::D);
+	m_sprinting = sf::Keyboard::isKeyPressed(sf::Keyboard::LShift);
+	m_jumping = sf::Keyboard::isKeyPressed(sf::Keyboard::Space);
+}
 
