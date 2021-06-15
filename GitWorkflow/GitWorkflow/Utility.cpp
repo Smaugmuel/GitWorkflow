@@ -29,6 +29,8 @@ void util::checkAndResolveCollision(Player& player, const Platform& platform)
 	if (!intersects(playerRect, platformRect))
 		return;
 
+	player.setColliding(true);
+
 	const sf::FloatRect intersection   = util::intersection(playerRect, platformRect);
 	const sf::Vector2f  playerCenter   = util::center(playerRect);
 	const sf::Vector2f  platformCenter = util::center(platformRect);
