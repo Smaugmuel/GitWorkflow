@@ -11,6 +11,11 @@ Player* Level::getPlayer() const
 	return m_player.get();
 }
 
+Player* Level::getPlayer() const
+{
+	return m_player.get();
+}
+
 void Level::update(const float dt)
 {
 	if (m_player)
