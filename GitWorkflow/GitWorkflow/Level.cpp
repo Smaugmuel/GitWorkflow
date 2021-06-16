@@ -6,10 +6,16 @@ Level::Level()
 {
 }
 
+Player* const Level::getPlayer() const
+{
+	return m_player.get();
+}
+
 void Level::update(const float dt)
 {
 	if (m_player)
 		m_player->update(dt);
+
 	if (m_endPoint)
 	{
 		m_endPoint->update(dt);
@@ -17,6 +23,8 @@ void Level::update(const float dt)
 		if (m_player && util::intersects(m_player->getGlobalBounds(), m_endPoint->getGlobalBounds()))
 			std::printf("LEVEL CLEARED!\n");
 	}
+
+	m_player->setColliding(false);
 
 	for (const auto& platform : m_platforms)
 	{

@@ -22,6 +22,8 @@ public:
 		else m_objects.push_back(std::make_unique<T>(args...));
 	}
 
+	Player* const getPlayer() const;
+
 	void update(const float dt);
 
 private:
