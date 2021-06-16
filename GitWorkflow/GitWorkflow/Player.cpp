@@ -9,7 +9,7 @@ void Player::update(const float dt)
 {
 	updateInput();
 	updateSpeed(dt);
-	updateMovement(dt);
+	updateVelocity(dt);
 
 	move(m_velocity * dt + sf::Vector2f(0.0f, 9.82f) * m_gravityModifier * (dt * dt * 0.5f));
 	m_velocity.y += 9.82f * m_gravityModifier * dt;
@@ -33,49 +33,35 @@ void Player::resetJump()
 void Player::accelerate(const sf::Vector2f& acceleration, const float dt)
 {
 	sf::Vector2f velocity = m_velocity + acceleration * dt;
+	const float lastDirection = (m_velocity.x > 0.0f ? 1.0f : (m_velocity.x < 0.0f ? -1.0f : 0.0f));
 
-	if (m_velocity.x > 0.0f)
-	{
-		if (acceleration.x > 0.0f && velocity.x > m_speed)
-			velocity.x = m_speed;
-		else if (acceleration.x < 0.0f && velocity.x < 0.0f)
-			velocity.x = 0.0f;
-	}
-
-	if (m_velocity.x < 0.0f)
-	{
-		if (acceleration.x < 0.0f && velocity.x < -m_speed)
-			velocity.x = -m_speed;
-		else if (acceleration.x > 0.0f && velocity.x > 0.0f)
-			velocity.x = 0.0f;
-	}
+	if ((m_velocity.x > 0.0f && acceleration.x > 0.0f && velocity.x > m_speed) 
+	 || (m_velocity.x < 0.0f && acceleration.x < 0.0f && velocity.x < -m_speed))
+		velocity.x = lastDirection * m_speed;
+	else if ((m_velocity.x < 0.0f && acceleration.x > 0.0f && velocity.x > 0.0f) 
+		  || (m_velocity.x > 0.0f && acceleration.x < 0.0f && velocity.x < 0.0f))
+		velocity.x = 0.0f;
 
 	m_velocity = velocity;
 }
 
-void Player::updateMovement(const float dt)
+void Player::updateVelocity(const float dt)
 {
-	if (!m_movingLeft)
-	{
-		if (m_velocity.x < 0.0f)
-			accelerate({ isColliding() ? m_acceleration : m_acceleration * m_airControl, 0.0f }, dt);
-	}
-	else if (m_velocity.x > -m_speed)
-		accelerate({ -m_acceleration, 0.0f }, dt);
-	else if (m_velocity.x < -m_speed && !m_sprinting && isColliding())
-		accelerate({ m_acceleration, 0.0f }, dt);
+	const float absVelocity   = std::abs(m_velocity.x);
+	const float nextDirection = (m_isMoveLeftButtonDown ? -1.0f : (m_isMoveRightButtonDown ? 1.0f : 0.0f));
+	const float lastDirection = (m_velocity.x > 0.0f ? -1.0f : (m_velocity.x < 0.0f ? 1.0f : 0.0f));
 
-	if (!m_movingRight)
+	if (nextDirection == 0.0f)
 	{
-		if (m_velocity.x > 0.0f)
-			accelerate({ isColliding() ? -m_acceleration : -m_acceleration * m_airControl, 0.0f }, dt);
+		if(absVelocity > 0.0f)
+			accelerate(lastDirection * sf::Vector2f(isColliding() ? m_acceleration : m_acceleration * m_airControl, 0.0f), dt);
 	}
-	else if (m_velocity.x < m_speed)
-		accelerate({ m_acceleration, 0.0f }, dt);
-	else if (m_velocity.x > m_speed && !m_sprinting && isColliding())
-		accelerate({ -m_acceleration, 0.0f }, dt);
+	else if(absVelocity < m_speed)
+		accelerate(nextDirection * sf::Vector2f( m_acceleration, 0.0f), dt);
+	else if(absVelocity > m_speed && !m_isSprintButtonDown && isColliding())
+		accelerate(nextDirection * sf::Vector2f(-m_acceleration, 0.0f), dt);
 
-	if (m_jumping)
+	if (m_isJumpButtonDown)
 	{
 		if (!m_hasJumped && isColliding())
 		{
@@ -93,7 +79,7 @@ void Player::updateSpeed(const float dt)
 
 	if (isColliding())
 	{
-		if (m_sprinting)
+		if (m_isSprintButtonDown)
 			m_speed *= m_sprintModifier;
 	}
 	else
@@ -102,9 +88,9 @@ void Player::updateSpeed(const float dt)
 
 void Player::updateInput()
 {
-	m_movingLeft = sf::Keyboard::isKeyPressed(sf::Keyboard::A);
-	m_movingRight = sf::Keyboard::isKeyPressed(sf::Keyboard::D);
-	m_sprinting = sf::Keyboard::isKeyPressed(sf::Keyboard::LShift);
-	m_jumping = sf::Keyboard::isKeyPressed(sf::Keyboard::Space);
+	m_isMoveLeftButtonDown  = sf::Keyboard::isKeyPressed(sf::Keyboard::A);
+	m_isMoveRightButtonDown = sf::Keyboard::isKeyPressed(sf::Keyboard::D);
+	m_isSprintButtonDown    = sf::Keyboard::isKeyPressed(sf::Keyboard::LShift);
+	m_isJumpButtonDown      = sf::Keyboard::isKeyPressed(sf::Keyboard::Space);
 }
 

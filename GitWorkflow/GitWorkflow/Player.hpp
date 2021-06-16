@@ -37,13 +37,13 @@ private:
 	bool m_colliding = false;
 	bool m_hasJumped = true;
 
-	bool m_movingLeft = false;
-	bool m_movingRight = false;
-	bool m_sprinting = false;
-	bool m_jumping = false;
+	bool m_isMoveLeftButtonDown = false;
+	bool m_isMoveRightButtonDown = false;
+	bool m_isSprintButtonDown = false;
+	bool m_isJumpButtonDown = false;
 
 	void accelerate(const sf::Vector2f& acceleration, const float dt);
-	void updateMovement(const float dt);
+	void updateVelocity(const float dt);
 	void updateSpeed(const float dt);
 	void updateInput();
 };
