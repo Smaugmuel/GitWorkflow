@@ -10,6 +10,8 @@
 using Clock = std::chrono::steady_clock;
 using Time = std::chrono::time_point<Clock>;
 
+constexpr float nanoSecondsToSeconds = 1.0f / static_cast<float>(1e9);
+
 int main()
 {
 	sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "SFML works!");
@@ -29,7 +31,8 @@ int main()
 	{
 		Time t2 = t1;
 		t1 = Clock::now();
-		const float dt = static_cast<float>((t1 - t2).count()) / static_cast<float>(1e9);
+
+		const float dt = static_cast<float>((t1 - t2).count()) * nanoSecondsToSeconds;
 		accumulator += dt;
 
 		sf::Event event;
